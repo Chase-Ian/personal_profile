@@ -1,128 +1,47 @@
 import 'package:flutter/material.dart';
 
+import 'home/home.dart';
+import 'social/social.dart';
+import 'profile/profile.dart';
+
 void main() {
-  runApp(const MainApp());
+  runApp(const MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: MainScaffold(),
+  ));
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class MainScaffold extends StatefulWidget {
+  const MainScaffold({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,                // just removes the debug banner
-      home: MyHomePage(title: 'Personal Profile')
-    );
-  }
+  State<MainScaffold> createState() => _MainScaffoldState();
 }
 
-class MyHomePage extends StatefulWidget {
-  
-  const MyHomePage({super.key, required this.title});
-  
-  final String title;
+class _MainScaffoldState extends State<MainScaffold> {
+  int _currentIndex = 0;
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+  final List<Widget> _tabs = [
+    const HomeTab(),
+    const SocialTab(),
+    const ProfileTab(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _tabs,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            //header
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                Container(
-                  height: 200,
-                  width: double.infinity,
-                  color: Colors.green,
-                ),
-
-                // Avatar
-                Positioned(
-                  top: 50,
-                  child: CircleAvatar(
-                    radius: 40,
-                    backgroundColor: Colors.white,
-                    child: Icon(
-                      Icons.person,
-                      size: 50,
-                      color: Colors.green,
-                    ),
-                  ),
-                ),
-
-                // Name
-                const Positioned(
-                  bottom: 20,
-                  child: Text(
-                    "Your name",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                  Positioned(
-                    top: 95,
-                    left: MediaQuery.of(context).size.width / 2 + 20,
-                    child: CircleAvatar(
-                      radius: 14,
-                      backgroundColor: Colors.blue,
-                      child: Icon(
-                        Icons.camera_alt,
-                        size: 16,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-            Center(
-            child:ElevatedButton(
-              child: const Text('Open route'),
-                onPressed: () {
-                Navigator.push(
-                context,
-                MaterialPageRoute<void>(
-                builder: (context) => const SecondRoute(),
-                    ),
-                   );
-                  },
-                ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class SecondRoute extends StatelessWidget {
-  const SecondRoute({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Second Route'), automaticallyImplyLeading: false,), //NOTE automaticallyImplyLeading is just removing the automatic back button when using navigator.push
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: const Text('Go back!'),
-        ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (i) => setState(() => _currentIndex = i),
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Social'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        ],
       ),
     );
   }
