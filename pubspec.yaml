@@ -9,11 +9,20 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  font_awesome_flutter: ^10.12.0
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+  google_fonts: ^6.1.0
+  supabase_flutter: ^2.0.0
+  image_picker: ^1.0.0
 
 flutter:
   uses-material-design: true
+  assets:
+    - asset/imageGalleryImage1.jpg
+    - asset/imageGalleryImage2.jpg
+    - asset/imageGalleryImage3.jpg
